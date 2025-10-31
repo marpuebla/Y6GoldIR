@@ -7,6 +7,7 @@ the **Wide-field Infrared Survey Explorer (WISE)**.
 This work is based on the **Angular Neighbourhood Fitting (ANF)** machine learn-ing algorithm, and evaluates how the inclusion of infrared photometry affects photo-z performance in terms of **bias**, **scatter** and **outlier fraction**. 
 
 ---
+## Examples 
 <img width="400" height="500" alt="F_1_b_wise" src="https://github.com/user-attachments/assets/ec2da19b-3b88-4567-86a1-094af47035eb" />
 
 <img width="400" height="500" alt="F_8_b_wise" src="https://github.com/user-attachments/assets/d1d98bb9-b0df-4cbf-a693-3a5a4d671966" />
