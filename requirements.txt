@@ -1,0 +1,10 @@
+numpy
+math
+os
+sys
+fnmatch
+sys
+scipy
+astropy
+matplotlib
+pylab
