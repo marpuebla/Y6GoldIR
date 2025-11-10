@@ -8,85 +8,76 @@ This work is based on the **Angular Neighbourhood Fitting (ANF)** machine learni
 
 ## ANF:
 
-This software, developed in Python, allows for the
-calculation of photometric redshifts by applying advanced fitting
-techniques. In ANF, the photometric redshift of a galaxy is calculated
-based on the redshifts of nearby training galaxies within the mul-
-timagnitude space. The redshifts of
-the training sample define a hypersurface across the multimagnitude space. In this context, for any given point in this space,
-which corresponds to a galaxy with unknown redshift, the shape
-of the local hypersurface can vary in smoothness depending on
-the direction. Accurate redshift estimation is more likely when
-the neighbourhood is selected along a direction in which the red-
-shift hypersurface varies smoothly, allowing for a better fit to the
-local structure. 
+This software, developed in Python, allows for the calculation of photometric redshifts by applying advanced fitting techniques. In ANF, the photometric redshift of a galaxy is calculated based on the redshifts of nearby training galaxies within the multimagnitude space. The redshifts of the training sample define a hypersurface across the multimagnitude space. In this context, for any given point in this space, which corresponds to a galaxy with unknown redshift, the shape of the local hypersurface can vary in smoothness depending on the direction. Accurate redshift estimation is more likely when the neighbourhood is selected along a direction in which the redshift hypersurface varies smoothly, allowing for a better fit to the local structure. 
 
-ANF algorithm provide the main photo-z
-value as: DNF_Z, determined by the fit of a number of neigh-
-bour galaxies to a hyperplane in the magnitude space. The ob-
-tained photometric redshift for each object is called (DNF_Z),
-determined using around 80 neighbours.
+ANF algorithm provide the main photo-z value as: DNF_Z, determined by the fit of a number of neighbour galaxies to a hyperplane in the magnitude space. The obtained photometric redshift for each object is called (DNF_Z), determined using around 80 neighbours.
 
 ## The metrics:
 
 The sample we are analysing includes magnitude measurements from the broad filters of all three surveys, as well as the spectroscopic redshifts. Taking the spectroscopic measurement as the truth value for the redshift, we can evaluate the quality of the photometric redshift estimation. 
- 
 
-This section outlines the metrics used to evaluate the accuracy of the photo-$z$ estimates. 
+1.Bias, $\mu$: measures the systematic offset between $z_{phot}$ and $z_{spec}$, where $z_{phot}$ and $z_{spec}$ refer to the photometric and spectroscopic redshift, respectively.
+The individual bias for each galaxy is defined as:
 
-\begin{itemize}
-    \item Bias, $\mu$: measures the systematic offset between $z_{phot}$ and $z_{spec}$, where $z_{phot}$ and  $z_{spec}$ refer to the photometric and spectroscopic redshift, respectively. The individual bias for each galaxy is defined as: 
-    \begin{equation}
-        \Delta z= z_{phot}-z_{spec} .
-    \end{equation}
-    
-    If we consider the number of photometric redshift galaxies as N, and the mean of the absolute values, the metric is set as: 
-    
-    \begin{equation}
-        \mu=\frac{1}{N}\sum_{i=1}^{N}{|\Delta z_i|}.
-    \end{equation}
-    
-    A small value of this metric indicates photometric redshifts are accurate with respect to the spectroscopic redshifts. %The residual of the point photometric redshift estimates.
+Δ
+𝑧
+=
+𝑧
+𝑝
+ℎ
+𝑜
+𝑡
+−
+𝑧
+𝑠
+𝑝
+𝑒
+𝑐
+Δz=z
+phot
+	​
 
-    \item Dispersion, $\sigma$: represents the scatter of the individual photometric residuals ($\Delta z_i$)  for each galaxy around their mean value. It quantifies the variability of the photometric redshift errors across the sample.
-    
-    If we consider:
-    \begin{equation}
-        b=\frac{1}{N}\sum_{i=1}^{N}{(\Delta z_i)},
-    \end{equation}
-    then the dispersion is set as:
-    \begin{equation}
-        \sigma=\sqrt{\frac{1}{N}\sum_{i=1}^{N}{(\Delta z_i-b)^2 }} .
-    \end{equation}
-    
-    \item Precision in 68-quantile, $\sigma_{68}$: quantifies the scatter or dispersion of the photometric redshifts. It represents the width of the distribution of photometric redshifts around the median that contains 68$\%$ of the data points. Specifically, it corresponds to the 68$\%$ quantile error, and is defined as:
-    
-    \begin{equation}
-        \sigma_{68}= \frac{1}{2}(P_{84}-P_{16}),
-    \end{equation}
-    
-    where $P_{84}$ and $P_{16}$ are the 84th and 16th percentiles of the cumulative distribution, respectively. The value of $\sigma_{68}$ is indicative of how well the photometric redshift estimates are cluster about the spectroscopic redshift. A small value suggest that the estimation is more accurate. 
-    
-    \item Normalised $\sigma_{68}$: the 68$\%$ quantile error over (1 +z), computed as: 
-    
-    \begin{equation}
-       \frac{\sigma_{68}}{1+z_{spec}}= \frac{1}{2}\frac{P_{84}-P_{16}}{1+z_{spec}}.
-    \end{equation}
-    
-    The normalisation is particularly useful for ensuring that the error does not systematically increase with redshift, otherwise it would be a photo-$z$ estimation bias.
-    
-    \item Outlier fraction: this metric quantifies the fraction of objects with large biases, for which the photometric redshift estimates are significantly inaccurate. It is defined following the criterion of \cite{Banerji2015}, where an object is classified as an outlier if the following condition is satisfied:
-    
-    \begin{equation}
-       \frac{\Delta z }{(1+z_{spec})} >0.15.
-    \end{equation}
-    
-    This fixed-threshold definition is preferred over $\sigma_{68}$-based criteria ($\Delta z / (1+z_{spec}) > n \cdot \sigma_{68}$), as the value of $\sigma_{68}$ tends to increase with redshift. Therefore, applying a threshold that scales with $\sigma_{68}$ can lead to an underestimation of the outlier rate in higher redshift bins. In contrast, the Banerji criterion sets a constant threshold for all redshift bins, allowing for stronger outlier identification and a direct comparison across the entire redshift range.
+−z
+spec
+	​
 
 
-We used the bootstrap  resampling statistical method (\cite{bootstrap}) to estimate the uncertainties and error bars for the metrics. Bootstrap is a non parametric technique that allows the estimation of the standard error and the confidence intervals of a given statistic by repeatedly resampling the original data with replacement.
+If we consider the number of photometric redshift galaxies as $N$, and the mean of the absolute values, the metric is set as:
 
-We implemented the bootstrap method using the \textit{SciPy} library from \textit{Python}\footnote{\textcolor{blue}{\href{https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html}{Scipy-Bootstrap Documentation.}}}. For each metric (the mean bias, scatter or outlier fraction), we generated 100 bootstrap resamples for the original matched catalogue. The metric was recomputed on each resample, and the resulting distribution was used to estimate the standard error. We adopted a 95$\%$ confidence level, and the resulting standard error was used as the symmetric uncertainty for the corresponding bin in our analysis.
+𝜇
+=
+1
+𝑁
+∑
+𝑖
+=
+1
+𝑁
+∣
+Δ
+𝑧
+𝑖
+∣
+μ=
+N
+1
+	​
+
+i=1
+∑
+N
+	​
+
+∣Δz
+i
+	​
+
+∣
+
+A small value of this metric indicates that photometric redshifts are accurate with respect to spectroscopic redshifts.
+
+We used the bootstrap  resampling statistical method to estimate the uncertainties and error bars for the metrics. Bootstrap is a non parametric technique that allows the estimation of the standard error and the confidence intervals of a given statistic by repeatedly resampling the original data with replacement. We implemented the bootstrap method using the SciPy library from Python. For each metric (the mean bias, scatter or outlier fraction), we generated 100 bootstrap resamples for the original matched catalogue. The metric is recomputed on each resample, and the resulting distribution was used to estimate the standard error. We adopted a 95$\%$ confidence level, and the resulting standard error is used as the symmetric uncertainty for the corresponding bin in our analysis.
+
 ---
 ## Examples 
 
