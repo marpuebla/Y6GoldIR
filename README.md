@@ -16,67 +16,81 @@ ANF algorithm provide the main photo-z value as: DNF_Z, determined by the fit of
 
 The sample we are analysing includes magnitude measurements from the broad filters of all three surveys, as well as the spectroscopic redshifts. Taking the spectroscopic measurement as the truth value for the redshift, we can evaluate the quality of the photometric redshift estimation. 
 
-1.Bias, $\mu$: measures the systematic offset between $z_{phot}$ and $z_{spec}$, where $z_{phot}$ and $z_{spec}$ refer to the photometric and spectroscopic redshift, respectively.
+We used the bootstrap  resampling statistical method to estimate the uncertainties and error bars for the metrics. Bootstrap is a non parametric technique that allows the estimation of the standard error and the confidence intervals of a given statistic by repeatedly resampling the original data with replacement. We implemented the bootstrap method using the SciPy library from Python. For each metric (the mean bias, scatter or outlier fraction), we generated 100 bootstrap resamples for the original matched catalogue. The metric is recomputed on each resample, and the resulting distribution was used to estimate the standard error. We adopted a 95$\%$ confidence level, and the resulting standard error is used as the symmetric uncertainty for the corresponding bin in our analysis.
+
+
+**Bias,** $\mu$: measures the systematic offset between $z_{phot}$ and $z_{spec}$, where $z_{phot}$ and $z_{spec}$ refer to the photometric and spectroscopic redshift, respectively.  
 The individual bias for each galaxy is defined as:
 
-Δ
-𝑧
-=
-𝑧
-𝑝
-ℎ
-𝑜
-𝑡
-−
-𝑧
-𝑠
-𝑝
-𝑒
-𝑐
-Δz=z
-phot
-	​
-
-−z
-spec
-	​
-
+$$
+\Delta z = z_{phot} - z_{spec}
+$$
 
 If we consider the number of photometric redshift galaxies as $N$, and the mean of the absolute values, the metric is set as:
 
-𝜇
-=
-1
-𝑁
-∑
-𝑖
-=
-1
-𝑁
-∣
-Δ
-𝑧
-𝑖
-∣
-μ=
-N
-1
-	​
+$$
+\mu = \frac{1}{N}\sum_{i=1}^{N} |\Delta z_i|
+$$
 
-i=1
-∑
-N
-	​
+A small value of this metric indicates that photometric redshifts are accurate with respect to the spectroscopic redshifts.
 
-∣Δz
-i
-	​
+---
 
-∣
+**Dispersion,** $\sigma$: represents the scatter of the individual photometric residuals ($\Delta z_i$) for each galaxy around their mean value.  
+It quantifies the variability of the photometric redshift errors across the sample.
 
-A small value of this metric indicates that photometric redshifts are accurate with respect to spectroscopic redshifts.
+If we consider:
 
-We used the bootstrap  resampling statistical method to estimate the uncertainties and error bars for the metrics. Bootstrap is a non parametric technique that allows the estimation of the standard error and the confidence intervals of a given statistic by repeatedly resampling the original data with replacement. We implemented the bootstrap method using the SciPy library from Python. For each metric (the mean bias, scatter or outlier fraction), we generated 100 bootstrap resamples for the original matched catalogue. The metric is recomputed on each resample, and the resulting distribution was used to estimate the standard error. We adopted a 95$\%$ confidence level, and the resulting standard error is used as the symmetric uncertainty for the corresponding bin in our analysis.
+$$
+b = \frac{1}{N}\sum_{i=1}^{N} (\Delta z_i)
+$$
+
+then the dispersion is set as:
+
+$$
+\sigma = \sqrt{\frac{1}{N}\sum_{i=1}^{N} (\Delta z_i - b)^2}
+$$
+
+---
+
+**Precision in 68-quantile,** $\sigma_{68}$: quantifies the scatter or dispersion of the photometric redshifts.  
+It represents the width of the distribution of photometric redshifts around the median that contains 68% of the data points.  
+Specifically, it corresponds to the 68% quantile error, and is defined as:
+
+$$
+\sigma_{68} = \frac{1}{2}(P_{84} - P_{16})
+$$
+
+where $P_{84}$ and $P_{16}$ are the 84th and 16th percentiles of the cumulative distribution, respectively.  
+The value of $\sigma_{68}$ is indicative of how well the photometric redshift estimates cluster around the spectroscopic redshift.  
+A small value suggests that the estimation is more accurate.
+
+---
+
+**Normalised** $\sigma_{68}$: the 68% quantile error over $(1 + z)$, computed as:
+
+$$
+\frac{\sigma_{68}}{1 + z_{spec}} = \frac{1}{2}\frac{P_{84} - P_{16}}{1 + z_{spec}}
+$$
+
+The normalisation is particularly useful for ensuring that the error does not systematically increase with redshift; otherwise, it would be a photo-$z$ estimation bias.
+
+---
+
+**Outlier fraction:** this metric quantifies the fraction of objects with large biases, for which the photometric redshift estimates are significantly inaccurate.  
+It is defined following the criterion of *Banerji et al. (2015)*, where an object is classified as an outlier if the following condition is satisfied:
+
+$$
+\frac{\Delta z}{1 + z_{spec}} > 0.15
+$$
+
+This fixed-threshold definition is preferred over $\sigma_{68}$-based criteria  
+($\Delta z / (1 + z_{spec}) > n \cdot \sigma_{68}$), as the value of $\sigma_{68}$ tends to increase with redshift.  
+Therefore, applying a threshold that scales with $\sigma_{68}$ can lead to an underestimation of the outlier rate in higher redshift bins.  
+In contrast, the Banerji criterion sets a constant threshold for all redshift bins, allowing for stronger outlier identification and a direct comparison across the entire redshift range.
+
+
+
 
 ---
 ## Examples 
