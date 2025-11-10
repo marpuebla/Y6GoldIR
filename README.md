@@ -84,8 +84,7 @@ $$
 \frac{\Delta z}{1 + z_{spec}} > 0.15
 $$
 
-This fixed-threshold definition is preferred over $\sigma_{68}$-based criteria  
-($\Delta z / (1 + z_{spec}) > n \cdot \sigma_{68}$), as the value of $\sigma_{68}$ tends to increase with redshift.  
+This fixed-threshold definition is preferred over $\sigma_{68}$-based criteria ($\Delta z / (1 + z_{spec}) > n \cdot \sigma_{68}$), as the value of $\sigma_{68}$ tends to increase with redshift.  
 Therefore, applying a threshold that scales with $\sigma_{68}$ can lead to an underestimation of the outlier rate in higher redshift bins.  
 In contrast, the Banerji criterion sets a constant threshold for all redshift bins, allowing for stronger outlier identification and a direct comparison across the entire redshift range.
 
