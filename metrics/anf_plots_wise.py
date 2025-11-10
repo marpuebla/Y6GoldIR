@@ -4,7 +4,7 @@
 #Ejecución: 
 #python anf_plots_comparar_wise_bootstrap_zspec_y.py anf_wise_bandas_optico.fits anf_wise_W1_W2.fits anf_wise_cony.fits
 
-#Mirar los filtros como los pongo y en funcion del resultado los _1 etc
+
 
 import numpy as np
 from astropy.table import Table
