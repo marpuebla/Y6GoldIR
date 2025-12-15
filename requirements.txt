@@ -8,3 +8,4 @@ scipy
 astropy
 matplotlib
 pylab
+speclite
