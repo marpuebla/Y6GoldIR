@@ -23,8 +23,8 @@ def plot_angdist_histogram(file1, file2):
 
     # Crear histograma
     plt.figure(figsize=(12, 8))
-    plt.hist(angdist2, bins=50, color='green', alpha=0.6, label='DES+WISE', edgecolor='black')
-    plt.hist(angdist1, bins=50, color='red', alpha=0.6, label='DES+VHS', edgecolor='black')
+    plt.hist(angdist2, bins=50, color='darkorange', alpha=0.6, label='DES+WISE', edgecolor='black')
+    plt.hist(angdist1, bins=50, color='mediumpurple', alpha=0.6, label='DES+VHS', edgecolor='black')
     
 
     # Etiquetas y leyenda
@@ -42,3 +42,4 @@ if __name__ == "__main__":
         print("Usage: python script.py file1.fits file2.fits")
     else:
         plot_angdist_histogram(sys.argv[1], sys.argv[2])
+
