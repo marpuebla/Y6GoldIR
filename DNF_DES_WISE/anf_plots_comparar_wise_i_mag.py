@@ -180,7 +180,7 @@ bin_centers_offset_2_MAD=bin_centers+0.07
 bin_centers_offset_3_MAD=bin_centers+0.22
 # Plot comparison
 plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1_MAD, meansMAD1, yerr=errorsMAD1, fmt='o', label='DES', color='cyan', capsize=4)
+plt.errorbar(bin_centers_offset_1_MAD, meansMAD1, yerr=errorsMAD1, fmt='o', label='DES', color='blue', capsize=4)
 plt.errorbar(bin_centers_offset_2_MAD, meansMAD2, yerr=errorsMAD2, fmt='s', label='DES+WISE', color='red', capsize=4)
 plt.errorbar(bin_centers_offset_3_MAD, meansMAD3, yerr=errorsMAD3, fmt='^', label='DES+WISE (with Y)', color='mediumpurple', capsize=4)
 
@@ -275,7 +275,7 @@ bin_centers_offset_2=bin_centers2+0.07
 bin_centers_offset_3=bin_centers3+0.22
 # Graficar sigma_68 / (1 + Z_MEAN) vs. z_phot para los tres archivos
 plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1, sigma68_ratio1, yerr=sigma68_ratio_err1, fmt='o', label='DES', color='cyan', capsize=4)
+plt.errorbar(bin_centers_offset_1, sigma68_ratio1, yerr=sigma68_ratio_err1, fmt='o', label='DES', color='blue', capsize=4)
 plt.errorbar(bin_centers_offset_2, sigma68_ratio2, yerr=sigma68_ratio_err2, fmt='s', label='DES+WISE', color='red', capsize=4)
 plt.errorbar(bin_centers_offset_3, sigma68_ratio3, yerr=sigma68_ratio_err3, fmt='^', label='DES+WISE (with Y)', color='mediumpurple', capsize=4)
 plt.xlabel('i-band magnitude')
@@ -324,7 +324,7 @@ bin_centers_offset_2=bin_centers2_Banerji+0.07
 bin_centers_offset_3=bin_centers3_Banerji+0.22
 # Graficar fracción de outliers vs. z_spec
 plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1, outlier_fraction1_Banerji, yerr=outlier_errors1_Banerji, fmt='o', label='DES', color='cyan', capsize=4)
+plt.errorbar(bin_centers_offset_1, outlier_fraction1_Banerji, yerr=outlier_errors1_Banerji, fmt='o', label='DES', color='blue', capsize=4)
 plt.errorbar(bin_centers_offset_2, outlier_fraction2_Banerji, yerr=outlier_errors2_Banerji, fmt='s', label='DES+WISE', color='red', capsize=4)
 plt.errorbar(bin_centers_offset_3, outlier_fraction3_Banerji, yerr=outlier_errors3_Banerji, fmt='^', label='DES+WISE (with Y)', color='mediumpurple', capsize=4)
 
