@@ -111,7 +111,7 @@ pylab.xlabel('Z')
 pylab.ylabel('DNF_Z')
 plt.legend(loc='best')
 #plt.title(f"\ndnf: bias={bias1:.4f}, sigma={sigma1:.4f}\nanf: bias={bias2:.4f}, sigma={sigma2:.4f}", fontsize=8)
-plt.savefig('cony/F_1_b_wise.png', dpi=300)
+plt.savefig('cony/F_1_b_wise.pdf', dpi=300)
 #pylab.show()
 
 
@@ -156,14 +156,14 @@ bin_centers_offset_2_MAD=bin_centers+0.01
 bin_centers_offset_3_MAD=bin_centers+0.03
 # Plot comparison
 plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1_MAD, meansMAD1, yerr=errorsMAD1, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2_MAD, meansMAD2, yerr=errorsMAD2, fmt='o', label='DES+WISE', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3_MAD, meansMAD3, yerr=errorsMAD3, fmt='o', label='DES+WISE (with Y)', color='green', capsize=4)
+plt.errorbar(bin_centers_offset_1_MAD, meansMAD1, yerr=errorsMAD1, fmt='o', label='DES', color='cyan', capsize=4)
+plt.errorbar(bin_centers_offset_2_MAD, meansMAD2, yerr=errorsMAD2, fmt='s', label='DES+WISE', color='red', capsize=4)
+plt.errorbar(bin_centers_offset_3_MAD, meansMAD3, yerr=errorsMAD3, fmt='^', label='DES+WISE (with Y)', color='mediumpurple', capsize=4)
 plt.xlabel('Photo-z bin')
 plt.ylabel(r'$\langle |z_\mathrm{photo} - z_\mathrm{spec}| \rangle$')
 plt.legend(loc='best')
 plt.grid()
-plt.savefig('cony/F_8_b_wise.png', dpi=300)
+plt.savefig('cony/F_8_b_wise.pdf', dpi=300)
 #plt.show()
 
 
@@ -248,14 +248,14 @@ bin_centers_offset_2=bin_centers2+0.01
 bin_centers_offset_3=bin_centers3+0.03
 # Graficar sigma_68 / (1 + Z_MEAN) vs. z_phot para los tres archivos
 plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1, sigma68_ratio1, yerr=sigma68_ratio_err1, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2, sigma68_ratio2, yerr=sigma68_ratio_err2, fmt='o', label='DES+WISE', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3, sigma68_ratio3, yerr=sigma68_ratio_err3, fmt='o', label='DES+WISE (with Y)', color='green', capsize=4)
+plt.errorbar(bin_centers_offset_1, sigma68_ratio1, yerr=sigma68_ratio_err1, fmt='o', label='DES', color='cyan', capsize=4)
+plt.errorbar(bin_centers_offset_2, sigma68_ratio2, yerr=sigma68_ratio_err2, fmt='s', label='DES+WISE', color='red', capsize=4)
+plt.errorbar(bin_centers_offset_3, sigma68_ratio3, yerr=sigma68_ratio_err3, fmt='^', label='DES+WISE (with Y)', color='mediumpurple', capsize=4)
 plt.xlabel('Photo-z bin')
 plt.ylabel(r'$\sigma_{68} / (1 + z_\mathrm{spec})$')
 plt.legend()
 plt.grid()
-plt.savefig('cony/F_4_b_wise.png', dpi=300)
+plt.savefig('cony/F_4_b_wise.pdf', dpi=300)
 #plt.title(r'Relación $\sigma_{68} / (1 + Z_{\text{MEAN}})$ en función de $z_{\text{phot}}$')
 
 
@@ -296,16 +296,16 @@ bin_centers_offset_2=bin_centers2_Banerji+0.01
 bin_centers_offset_3=bin_centers3_Banerji+0.03
 # Graficar fracción de outliers vs. z_spec
 plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1, outlier_fraction1_Banerji, yerr=outlier_errors1_Banerji, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2, outlier_fraction2_Banerji, yerr=outlier_errors2_Banerji, fmt='o', label='DES+WISE', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3, outlier_fraction3_Banerji, yerr=outlier_errors3_Banerji, fmt='o', label='DES+WISE (with Y)', color='green', capsize=4)
+plt.errorbar(bin_centers_offset_1, outlier_fraction1_Banerji, yerr=outlier_errors1_Banerji, fmt='o', label='DES', color='cyan', capsize=4)
+plt.errorbar(bin_centers_offset_2, outlier_fraction2_Banerji, yerr=outlier_errors2_Banerji, fmt='s', label='DES+WISE', color='red', capsize=4)
+plt.errorbar(bin_centers_offset_3, outlier_fraction3_Banerji, yerr=outlier_errors3_Banerji, fmt='^', label='DES+WISE (with Y)', color='mediumpurple', capsize=4)
 plt.xlabel('Photo-z bin')
 plt.ylabel('Outlier Fraction (Banerji)')
 plt.legend()
 plt.grid()
 #plt.title('outliers banerji vs. $z_{\text{spec}}$')
 #plt.show()
-plt.savefig('cony/F_7_banerji_b_wise.png', dpi=300)
+plt.savefig('cony/F_7_banerji_b_wise.pdf', dpi=300)
 """
 pongo aquí los que no van al TFM
 
