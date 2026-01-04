@@ -8,7 +8,6 @@
 #python plots_comparar_vhs_bootstrap_zspec_JKS.py anf_vhs_bandas_optico_corregido.fits anf_vhs_corregido.fits anf_vhs_JKs.fits
 
 #Mirar los filtros como los pongo y en funcion del resultado los _1 etc
-
 import numpy as np
 from astropy.table import Table
 import sys
@@ -18,11 +17,11 @@ import weighted_kde as kde
 from scipy.stats import bootstrap
 from matplotlib.colors import LogNorm
 
-# Read files
+# Read three files
 file1 = sys.argv[1]
 file2 = sys.argv[2]
 file3 = sys.argv[3]
-
+file4 = sys.argv[4]
 plt.rcParams.update({
     'axes.labelsize': 16,
     'xtick.labelsize': 14,
@@ -31,15 +30,18 @@ plt.rcParams.update({
     'figure.titlesize': 16
 })
 
-
-def process_data(file, filters):
+# Function to process data
+def process_data(file, filters, e_filters):
     mag_name = []
     magerr_name = []
     nfilters = len(filters)
+    n_efilters = len(e_filters)
 
     for f in filters:
-        mag_name.append(f'BDF_MAG_{f}_CORRECTED')
-        magerr_name.append(f'BDF_MAG_ERR_{f}')
+        mag_name.append(f'BDF_MAG_{f}')
+    for f_e in e_filters:
+        magerr_name.append(f'BDF_MAG_ERR_{f_e}')
+
 
     t = Table.read(file)
     t['Z_MEAN'] = t['DNF_Z']
@@ -53,8 +55,8 @@ def process_data(file, filters):
     t = t[sel]
     sel = ~np.isnan(t['Z_MEAN'])
     t = t[sel]
+
     Nvalid = len(t)
-    print(Nvalid)
     M = np.zeros((Nvalid, nfilters), dtype='double')
     Merr = np.zeros((Nvalid, nfilters), dtype='double')
 
@@ -69,63 +71,66 @@ def process_data(file, filters):
 
     t = t[sel]
     Nvalid = len(t)
-    print(Nvalid)
+
     # Calculate bias and sigma, lo comento para el TFM bueno
     #bias = np.mean(t['Z'] - t['Z_MEAN'])
     #sigma = np.std(t['Z'] - t['Z_MEAN'])
     #zerrabs = np.abs(t['Z'] - t['Z_MEAN'])
     #zerrSort = np.sort(zerrabs)
     #zerrsigma68 = zerrSort[int(Nvalid * 68 / 100)]
-    bias = np.mean(np.abs(t['Z_MEAN'] - t['Z']))
-    sigma = np.std(t['Z_MEAN'] - t['Z'])
-    zerrabs = np.abs(t['Z_MEAN'] - t['Z'])
+    bias = np.mean(np.abs(t['Z_MEAN'] - t['Z_1']))
+    sigma = np.std(t['Z_MEAN'] - t['Z_1'])
+    zerrabs = np.abs(t['Z_MEAN'] - t['Z_1'])
     zerrSort = np.sort(zerrabs)
     zerrsigma68 = zerrSort[int(Nvalid * 68 / 100)]
 
     return t, bias, sigma, zerrsigma68
 
+# Specify filters for each file
+filters1 = ['G_CORRECTED_1', 'R_CORRECTED_1', 'I_CORRECTED_1', 'Z_CORRECTED_1']  
+filters2 = ['G_CORRECTED_1', 'R_CORRECTED_1', 'I_CORRECTED_1', 'Z_CORRECTED_1', 'J_CORRECTED', 'H_CORRECTED', 'KS_CORRECTED']  
+filters3 = ['G_CORRECTED_1', 'R_CORRECTED_1', 'I_CORRECTED_1', 'Z_CORRECTED_1', 'W1_CORRECTED','W2_CORRECTED']  # Example filters for file2
+filters4 = ['G_CORRECTED_1', 'R_CORRECTED_1', 'I_CORRECTED_1', 'Z_CORRECTED_1', 'J_CORRECTED', 'H_CORRECTED', 'KS_CORRECTED', 'W1_CORRECTED','W2_CORRECTED']  # Example filters for file2
+e_filters1 = ['G_1', 'R_1', 'I_1', 'Z_1']  
+e_filters2 = ['G_1', 'R_1', 'I_1', 'Z_1', 'J', 'H', 'KS']  
+e_filters3 = ['G_1', 'R_1', 'I_1', 'Z_1','W1','W2']  # Example filters for file2
+e_filters4 = ['G_1', 'R_1', 'I_1', 'Z_1', 'J', 'H', 'KS', 'W1','W2']  # Example filters for file2
 
-filters1 = ['G', 'R', 'I', 'Z']  
-filters2 = ['G', 'R', 'I', 'Z', 'J', 'H', 'KS'] 
-filters3 = ['G', 'R', 'I', 'Z', 'J', 'KS'] 
 
+# Process all three files
+t1, bias1, sigma1, zerrsigma68_1 = process_data(file1, filters1, e_filters1)
+t2, bias2, sigma2, zerrsigma68_2 = process_data(file2, filters2, e_filters2)
+t3, bias3, sigma3, zerrsigma68_3 = process_data(file3, filters3, e_filters3)
+t4, bias4, sigma4, zerrsigma68_4 = process_data(file4, filters4, e_filters4)
 
-
-
-t1, bias1, sigma1, zerrsigma68_1 = process_data(file1, filters1)
-t2, bias2, sigma2, zerrsigma68_2 = process_data(file2, filters2)
-t3, bias3, sigma3, zerrsigma68_3 = process_data(file3, filters3)
-
-print('longitudes:' , len(t1), len(t2), len(t3))
-print('bias:' , bias1, bias2, bias3)
-print('sigma:' , sigma1, sigma2, sigma3)
-print('sigma68:' , zerrsigma68_1, zerrsigma68_2, zerrsigma68_3)
-
+print('longitudes:' , len(t1), len(t2))
+print('bias:' , bias1, bias2, bias3, bias4)
+print('sigma:' , sigma1, sigma2,sigma3, sigma4)
+print('sigma68:' , zerrsigma68_1, zerrsigma68_2,  zerrsigma68_3, zerrsigma68_4)
+# Create the first plot: z vs DNF_Z for all three files
 plt.figure(figsize=(8, 5))
-plt.hist2d(t1['Z'], t1['Z_MEAN'], bins=1000, norm=LogNorm(), label='optical', alpha=1)
-plt.hist2d(t2['Z'], t2['Z_MEAN'], bins=1000, norm=LogNorm(), label='vhs', alpha=1)
-plt.hist2d(t3['Z'], t3['Z_MEAN'], bins=1000, norm=LogNorm(), label='vhs J,Ks', alpha=1)
+plt.hist2d(t1['Z_1'], t1['Z_MEAN'], bins=1000, norm=LogNorm(), label='optical', alpha=1)
+plt.hist2d(t2['Z_1'], t2['Z_MEAN'], bins=1000, norm=LogNorm(), label='vhs', alpha=1)
+plt.hist2d(t3['Z_1'], t3['Z_MEAN'], bins=1000, norm=LogNorm(), label='wise', alpha=1)
+plt.hist2d(t4['Z_1'], t4['Z_MEAN'], bins=1000, norm=LogNorm(), label='vhs+wise', alpha=1)
 plt.colorbar()
 pylab.xlim(0.0, 1.5)
 pylab.ylim(0.0, 1.5)
-pylab.xlabel('Z')
+pylab.xlabel('Z_1')
 pylab.ylabel('DNF_Z')
 plt.legend(loc='best')
 #plt.title(f"\ndnf: bias={bias1:.4f}, sigma={sigma1:.4f}\nanf: bias={bias2:.4f}, sigma={sigma2:.4f}", fontsize=8)
-plt.savefig('3catalogos/F_1_b_vhs.png', dpi=300)
+plt.savefig('PRUEBAS/F_1_b_match_completo.pdf', dpi=300)
 #pylab.show()
 
 
-
+# Create a scatter plot comparing the mean delta_z for all three files in bins
 bins = np.linspace(0.2, 1.4, 10)  # Define the bins
-bin_centers = (bins[:-1] + bins[1:]) / 2  
+bin_centers = (bins[:-1] + bins[1:]) / 2  # Bin centers
 
-
-
-###Pruebo esto nuevoo
 def calculate_means_and_errorsMAD(t, bins):
     photo_z = np.ma.filled(t['Z_MEAN'], np.nan)  
-    delta_z = np.ma.filled((t['Z_MEAN'] - t['Z']), np.nan)  
+    delta_z = np.ma.filled((t['Z_MEAN'] - t['Z_1']), np.nan)  
     means = []
     errors = []
 
@@ -150,28 +155,27 @@ def calculate_means_and_errorsMAD(t, bins):
 meansMAD1, errorsMAD1 = calculate_means_and_errorsMAD(t1, bins)
 meansMAD2, errorsMAD2 = calculate_means_and_errorsMAD(t2, bins)
 meansMAD3, errorsMAD3 = calculate_means_and_errorsMAD(t3, bins)
+meansMAD4, errorsMAD4 = calculate_means_and_errorsMAD(t4, bins)
 
 bin_centers_offset_1_MAD=bin_centers-0.01
 bin_centers_offset_2_MAD=bin_centers+0.01
 bin_centers_offset_3_MAD=bin_centers+0.03
-
-
+bin_centers_offset_4_MAD=bin_centers+0.05
+# Plot comparison
 plt.figure(figsize=(8, 5))
 plt.errorbar(bin_centers_offset_1_MAD, meansMAD1, yerr=errorsMAD1, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2_MAD, meansMAD2, yerr=errorsMAD2, fmt='o', label='DES+VHS', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3_MAD, meansMAD3, yerr=errorsMAD3, fmt='o', label='DES+VHS (without H)', color='green', capsize=4)
+plt.errorbar(bin_centers_offset_2_MAD, meansMAD2, yerr=errorsMAD2, fmt='D', label='DES+VHS', color='red', capsize=4)
+plt.errorbar(bin_centers_offset_3_MAD, meansMAD3, yerr=errorsMAD3, fmt='^', label='DES+WISE', color='mediumpurple', capsize=4)
+plt.errorbar(bin_centers_offset_4_MAD, meansMAD4, yerr=errorsMAD4, fmt='*', label='DES+VHS+WISE', color='orange', capsize=4)
 plt.xlabel('Photo-z bin')
 plt.ylabel(r'$\langle |z_\mathrm{photo} - z_\mathrm{spec}| \rangle$')
 plt.legend(loc='best')
-plt.grid()
-plt.savefig('3catalogos/F_8_b_vhs.png', dpi=300)
+#plt.grid()
+plt.savefig('PRUEBAS/F_8_b_match.pdf', dpi=300)
 #plt.show()
-
-
-
 def calculate_sigma68_with_error(t, bins):
     photo_z = np.ma.filled(t['Z_MEAN'], np.nan)
-    delta_z = np.ma.filled(t['Z_MEAN'] - t['Z'], np.nan)
+    delta_z = np.ma.filled(t['Z_MEAN'] - t['Z_1'], np.nan)
     sigma68 = []
     sigma68_err = []
 
@@ -179,7 +183,7 @@ def calculate_sigma68_with_error(t, bins):
         mask = (photo_z >= bins[i]) & (photo_z < bins[i + 1])
         dz_bin = delta_z[mask]
 
-        if len(dz_bin) > 10:  
+        if len(dz_bin) > 10:  # Evita bins con pocos datos
             lower = np.percentile(dz_bin, 16)
             upper = np.percentile(dz_bin, 84)
             sigma = (upper - lower) / 2
@@ -201,39 +205,26 @@ def calculate_sigma68_with_error(t, bins):
 bin_centers1, sigma68_1, sigma68_err1 = calculate_sigma68_with_error(t1, bins)
 bin_centers2, sigma68_2, sigma68_err2 = calculate_sigma68_with_error(t2, bins)
 bin_centers3, sigma68_3, sigma68_err3 = calculate_sigma68_with_error(t3, bins)
-bin_centers_offset_1=bin_centers1-0.01
-bin_centers_offset_2=bin_centers2+0.01
-bin_centers_offset_3=bin_centers3+0.03
-# Graficar sigma_68 vs. z_phot con barras de error
-plt.figure(figsize=(8, 5))
-plt.errorbar(bin_centers_offset_1, sigma68_1, yerr=sigma68_err1, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2, sigma68_2, yerr=sigma68_err2, fmt='o', label='DES+VHS', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3, sigma68_3, yerr=sigma68_err3, fmt='o', label='DES+VHS (without H)', color='green', capsize=4)
-plt.xlabel('Photo-z bin')
-plt.ylabel(r'$\sigma_{68}$')
-plt.legend()
-plt.grid()
-plt.savefig("3catalogos/F_3_b_vhs.png", dpi=300)
-#plt.show()
+bin_centers4, sigma68_4, sigma68_err4 = calculate_sigma68_with_error(t4, bins)
 
-# Función para calcular sigma_68 / (1 + Z)
+# Funcion para calcular sigma_68 / (1 + Z_MEAN)
 def calculate_sigma68_ratio(t, bins):
     photo_z = np.ma.filled(t['Z_MEAN'], np.nan)
-    delta_z = np.ma.filled(t['Z_MEAN'] - t['Z'], np.nan)
+    delta_z = np.ma.filled(t['Z_MEAN'] - t['Z_1'], np.nan)
     sigma68_ratio = []
     sigma68_ratio_err = []
 
     for i in range(len(bins) - 1):
         mask = (photo_z >= bins[i]) & (photo_z < bins[i + 1])
         dz_bin = delta_z[mask]
-        z_mean_bin = t['Z'][mask]
+        z_mean_bin = t['Z_1'][mask]
 
         if len(dz_bin) > 0:
             lower = np.percentile(dz_bin, 16)
             upper = np.percentile(dz_bin, 84)
             sigma_68 = (upper - lower) / 2
             sigma68_ratio.append(sigma_68 / np.mean(1 + z_mean_bin))
-            # Aplicamos el bootstrap usando lambda para calcular sigma_68 y dividir por (1 + Z)
+            # Aplicamos el bootstrap usando lambda para calcular sigma_68 y dividir por (1 + Z_MEAN)
             res = bootstrap(
                 (dz_bin,), 
                 lambda x: (np.percentile(x, 84) - np.percentile(x, 16)) / 2 / np.mean(1 + z_mean_bin),
@@ -242,52 +233,51 @@ def calculate_sigma68_ratio(t, bins):
             )
 
 
-         
+            # Almacenar la relacion sigma68 / (1 + Z_MEAN) para el bin
             sigma68_ratio_err.append(res.standard_error)
 
         else:
-            sigma68_ratio.append(np.nan)  
-            sigma68_ratio_err.append(np.nan)  
+            sigma68_ratio.append(np.nan)  # Para evitar errores si no hay datos en el bin
+            sigma68_ratio_err.append(np.nan)  # Si no hay datos, el error tambien es NaN
 
     return bin_centers, sigma68_ratio, sigma68_ratio_err
 
 
 
-
+# Calcular sigma68 / (1 + Z_MEAN) para cada archivo
 bin_centers1, sigma68_ratio1, sigma68_ratio_err1 = calculate_sigma68_ratio(t1, bins)
 bin_centers2, sigma68_ratio2, sigma68_ratio_err2 = calculate_sigma68_ratio(t2, bins)
 bin_centers3, sigma68_ratio3, sigma68_ratio_err3 = calculate_sigma68_ratio(t3, bins)
+bin_centers4, sigma68_ratio4, sigma68_ratio_err4 = calculate_sigma68_ratio(t4, bins)
+
 bin_centers_offset_1=bin_centers1-0.01
 bin_centers_offset_2=bin_centers2+0.01
 bin_centers_offset_3=bin_centers3+0.03
-
-# Graficar sigma_68 / (1 + Z_MEAN) vs. z_phot para los archivos
+bin_centers_offset_4=bin_centers4+0.05
+# Graficar sigma_68 / (1 + Z_MEAN) vs. z_phot para los tres archivos
 plt.figure(figsize=(8, 5))
 plt.errorbar(bin_centers_offset_1, sigma68_ratio1, yerr=sigma68_ratio_err1, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2, sigma68_ratio2, yerr=sigma68_ratio_err2, fmt='o', label='DES+VHS', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3, sigma68_ratio3, yerr=sigma68_ratio_err3, fmt='o', label='DES+VHS (without H)', color='green', capsize=4)
+plt.errorbar(bin_centers_offset_2, sigma68_ratio2, yerr=sigma68_ratio_err2, fmt='D', label='DES+VHS', color='red', capsize=4)
+plt.errorbar(bin_centers_offset_3, sigma68_ratio3, yerr=sigma68_ratio_err3, fmt='^', label='DES+WISE', color='mediumpurple', capsize=4)
+plt.errorbar(bin_centers_offset_4, sigma68_ratio4, yerr=sigma68_ratio_err4, fmt='*', label='DES+VHS+WISE', color='orange', capsize=4)
 plt.xlabel('Photo-z bin')
 plt.ylabel(r'$\sigma_{68} / (1 + z_\mathrm{spec})$')
 plt.legend()
-plt.grid()
-plt.savefig('3catalogos/F_4_b_vhs.png', dpi=300)
+#plt.grid()
+plt.savefig('PRUEBAS/F_4_b.pdf', dpi=300)
 #plt.title(r'Relación $\sigma_{68} / (1 + Z_{\text{MEAN}})$ en función de $z_{\text{phot}}$')
 
-#plt.show()
 
-
-
-###outliers de banerji
 def calculate_outlier_fraction_Banerji(t, bins, sigma68_values):
     photo_z = t['Z_MEAN']
-    delta_z = t['Z_MEAN'] - t['Z']
+    delta_z = t['Z_MEAN'] - t['Z_1']
     outlier_fractions_Banerji = []
     bin_centers_Banerji = (bins[:-1] + bins[1:]) / 2
     outlier_errors_Banerji = []
     for i in range(len(bins) - 1):
         mask = (photo_z >= bins[i]) & (photo_z < bins[i + 1])
         dz_bin = delta_z[mask]
-        z_mean_bin = t['Z'][mask]
+        z_mean_bin = t['Z_1'][mask]
 
         if len(dz_bin) > 0:
             threshold = 0.15
@@ -297,34 +287,37 @@ def calculate_outlier_fraction_Banerji(t, bins, sigma68_values):
 
             # Calcular error con bootstrap
             res = bootstrap((outlier_mask,), np.mean, n_resamples=100, confidence_level=0.95)
-            outlier_errors_Banerji.append(res.standard_error)  # Simétrico arriba y abajo
+            outlier_errors_Banerji.append(res.standard_error)  # Simetrico arriba y abajo
         else:
             outlier_fractions_Banerji.append(np.nan)
-            outlier_errors_Banerji.append(np.nan)  # Evitar errores en bins vacíos
+            outlier_errors_Banerji.append(np.nan)  # Evitar errores en bins vacios
 
 
     return bin_centers_Banerji, outlier_fractions_Banerji, outlier_errors_Banerji
 
 
-
+# Calcular fraccion de outliers para cada conjunto de datos
 bin_centers1_Banerji, outlier_fraction1_Banerji, outlier_errors1_Banerji = calculate_outlier_fraction_Banerji(t1, bins, sigma68_1)
 bin_centers2_Banerji, outlier_fraction2_Banerji, outlier_errors2_Banerji = calculate_outlier_fraction_Banerji(t2, bins, sigma68_2)
 bin_centers3_Banerji, outlier_fraction3_Banerji, outlier_errors3_Banerji = calculate_outlier_fraction_Banerji(t3, bins, sigma68_3)
+bin_centers4_Banerji, outlier_fraction4_Banerji, outlier_errors4_Banerji = calculate_outlier_fraction_Banerji(t4, bins, sigma68_4)
 bin_centers_offset_1=bin_centers1_Banerji-0.01
 bin_centers_offset_2=bin_centers2_Banerji+0.01
 bin_centers_offset_3=bin_centers3_Banerji+0.03
-# Graficar outliers vs. z_spec
+bin_centers_offset_4=bin_centers4_Banerji+0.05
+# Graficar fraccion de outliers vs. z_spec
 plt.figure(figsize=(8, 5))
 plt.errorbar(bin_centers_offset_1, outlier_fraction1_Banerji, yerr=outlier_errors1_Banerji, fmt='o', label='DES', color='blue', capsize=4)
-plt.errorbar(bin_centers_offset_2, outlier_fraction2_Banerji, yerr=outlier_errors2_Banerji, fmt='o', label='DES+VHS', color='red', capsize=4)
-plt.errorbar(bin_centers_offset_3, outlier_fraction3_Banerji, yerr=outlier_errors3_Banerji, fmt='o', label='DES+VHS (without H)', color='green', capsize=4)
+plt.errorbar(bin_centers_offset_2, outlier_fraction2_Banerji, yerr=outlier_errors2_Banerji, fmt='D', label='DES+VHS', color='red', capsize=4)
+plt.errorbar(bin_centers_offset_3, outlier_fraction3_Banerji, yerr=outlier_errors3_Banerji, fmt='^', label='DES+WISE', color='mediumpurple', capsize=4)
+plt.errorbar(bin_centers_offset_4, outlier_fraction4_Banerji, yerr=outlier_errors4_Banerji, fmt='*', label='DES+VHS+WISE', color='orange', capsize=4)
 plt.xlabel('Photo-z bin')
 plt.ylabel('Outlier Fraction (Banerji)')
 plt.legend()
-plt.grid()
+#plt.grid()
 #plt.title('outliers banerji vs. $z_{\text{spec}}$')
 #plt.show()
-plt.savefig('3catalogos/F_7_banerji_b_vhs.png', dpi=300)
+plt.savefig('PRUEBAS/F_7_banerji_b_match.pdf', dpi=300)
 
 """
 
