@@ -52,7 +52,7 @@ def plot_mag_histogram(file1, file2, file3):
 
     plt.legend()
     plt.tight_layout()
-    plt.savefig('imag_2.png', dpi=500)
+    plt.savefig('imag_2.pdf', dpi=500)
     plt.show()
 
 if __name__ == "__main__":
@@ -60,4 +60,5 @@ if __name__ == "__main__":
         print("Usage: python script.py file1.fits file2.fits file3.fits")
     else:
         plot_mag_histogram(sys.argv[1], sys.argv[2], sys.argv[3])
+
 
