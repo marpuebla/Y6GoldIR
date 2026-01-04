@@ -38,10 +38,10 @@ def plot_mag_histogram(file1, file2, file3):
 
     plt.figure(figsize=(12,8))
 
-    plt.hist(mag1, bins=bins, color='red', alpha=0.6, label='DES+VHS', edgecolor='black')
-    plt.hist(mag2, bins=bins, color='green', alpha=1, label='DES+WISE', edgecolor='black')
-    plt.hist(mag3, bins=bins, color='orange', alpha=0.9, label='DES+VHS+WISE', edgecolor='black')
-
+    plt.hist(mag2, bins=bins, color='mediumpurple', alpha=1, label='DES+WISE', edgecolor='black')
+    plt.hist(mag1, bins=bins, color='green', alpha=1, label='DES+VHS', edgecolor='black')
+    plt.hist(mag3, bins=bins, color='darkorange', alpha=0.9, label='DES+VHS+WISE', edgecolor='black')
+    
     plt.xlabel('i-band magnitude / mag')
     plt.ylabel('Number of sources')
 
@@ -60,3 +60,4 @@ if __name__ == "__main__":
         print("Usage: python script.py file1.fits file2.fits file3.fits")
     else:
         plot_mag_histogram(sys.argv[1], sys.argv[2], sys.argv[3])
+
