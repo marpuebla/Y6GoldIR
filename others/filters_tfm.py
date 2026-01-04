@@ -61,7 +61,7 @@ plt.ylabel('Filter Response')
 plt.legend(loc='upper right')
 plt.grid(False)
 plt.tight_layout()
-plt.savefig('wisedecam.png',dpi=500)
+plt.savefig('wisedecam.pdf',dpi=500)
 plt.show()
 
 
@@ -97,7 +97,7 @@ plt.ylabel('Filter Response')
 plt.legend(loc='upper right')
 plt.grid(False)
 plt.tight_layout()
-plt.savefig('todos.png',dpi=500)
+plt.savefig('todos.pdf',dpi=500)
 plt.show()
 
 
@@ -142,7 +142,7 @@ plt.ylabel('Filter Response')
 plt.legend(loc='upper right')
 plt.grid(False)
 plt.tight_layout()
-plt.savefig('desvhs.png',dpi=500)
+plt.savefig('desvhs.pdf',dpi=500)
 plt.show()
 
 
@@ -199,7 +199,7 @@ handles, labels = plt.gca().get_legend_handles_labels()
 plt.legend(handles[::1], ['W1', 'W2', 'W3', 'W4'], loc='upper right')
 plt.grid(False)
 plt.subplots_adjust(bottom=0.17)
-plt.savefig('wisefilters.png',dpi=500)
+plt.savefig('wisefilters.pdf',dpi=500)
 plt.show()
 plt.close()
 
@@ -226,7 +226,7 @@ handles, labels = plt.gca().get_legend_handles_labels()
 plt.legend(handles[::1], ['g', 'r', 'i', 'z','Y'], loc='upper left')
 plt.grid(False)
 plt.subplots_adjust(bottom=0.17)
-plt.savefig('decamfilters.png',dpi=500)
+plt.savefig('decamfilters.pdf',dpi=500)
 plt.show()
 plt.close()
 
@@ -269,7 +269,7 @@ plt.legend(loc='upper right')
 plt.grid(False)
 plt.subplots_adjust(bottom=0.17)
 # Guardar el gráfico
-plt.savefig('vistafilters_no_modification.png',dpi=500)
+plt.savefig('vistafilters_no_modification.pdf',dpi=500)
 plt.show()
 plt.close()
 
