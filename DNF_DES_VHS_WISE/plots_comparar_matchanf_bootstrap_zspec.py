@@ -119,7 +119,7 @@ pylab.xlabel('Z_1')
 pylab.ylabel('DNF_Z')
 plt.legend(loc='best')
 #plt.title(f"\ndnf: bias={bias1:.4f}, sigma={sigma1:.4f}\nanf: bias={bias2:.4f}, sigma={sigma2:.4f}", fontsize=8)
-plt.savefig('PRUEBAS/F_1_b_match_completo.png', dpi=300)
+plt.savefig('PRUEBAS/F_1_b_match_completo.pdf', dpi=300)
 #pylab.show()
 
 
@@ -263,7 +263,7 @@ plt.xlabel('Photo-z bin')
 plt.ylabel(r'$\sigma_{68} / (1 + z_\mathrm{spec})$')
 plt.legend()
 #plt.grid()
-plt.savefig('PRUEBAS/F_4_b.png', dpi=300)
+plt.savefig('PRUEBAS/F_4_b.pdf', dpi=300)
 #plt.title(r'Relación $\sigma_{68} / (1 + Z_{\text{MEAN}})$ en función de $z_{\text{phot}}$')
 
 
@@ -316,7 +316,7 @@ plt.legend()
 #plt.grid()
 #plt.title('outliers banerji vs. $z_{\text{spec}}$')
 #plt.show()
-plt.savefig('PRUEBAS/F_7_banerji_b_match.png', dpi=300)
+plt.savefig('PRUEBAS/F_7_banerji_b_match.pdf', dpi=300)
 """
 
 # Calculate mean delta_z for each bin in all three files
