@@ -34,7 +34,7 @@ def plot_angdist_histogram(file1, file2):
     #plt.title('Histogram of Angular Distances')
     #plt.grid(True)
     plt.tight_layout()
-    plt.savefig('angDist.png',dpi=500)
+    plt.savefig('angDist.pdf',dpi=500)
     plt.show()
 # Ejecutar si el script se llama directamente
 if __name__ == "__main__":
@@ -42,4 +42,5 @@ if __name__ == "__main__":
         print("Usage: python script.py file1.fits file2.fits")
     else:
         plot_angdist_histogram(sys.argv[1], sys.argv[2])
+
 
