@@ -1,0 +1,33 @@
+filters:
+  - BDF_MAG_G_CORRECTED_1
+  - BDF_MAG_R_CORRECTED_1
+  - BDF_MAG_I_CORRECTED_1
+  - BDF_MAG_Z_CORRECTED_1
+  #- BDF_MAG_J_CORRECTED
+  #- BDF_MAG_H_CORRECTED
+  #- BDF_MAG_KS_CORRECTED
+  - BDF_MAG_W1_CORRECTED
+  - BDF_MAG_W2_CORRECTED
+
+
+filters_err:
+  - BDF_MAG_ERR_G_1
+  - BDF_MAG_ERR_R_1
+  - BDF_MAG_ERR_I_1
+  - BDF_MAG_ERR_Z_1
+  #- BDF_MAG_ERR_J
+  #- BDF_MAG_ERR_H
+  #- BDF_MAG_ERR_KS
+  - BDF_MAG_ERR_W1
+  - BDF_MAG_ERR_W2
+
+zspec: Z_1
+
+bins:
+  start: 0.0
+  stop: 2.0
+  nbins: 100
+
+fit: true
+pdf: true
+metric: ANF
