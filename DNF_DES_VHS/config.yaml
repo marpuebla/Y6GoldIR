@@ -1,0 +1,27 @@
+filters:
+  - BDF_MAG_G_CORRECTED
+  - BDF_MAG_R_CORRECTED
+  - BDF_MAG_I_CORRECTED
+  - BDF_MAG_Z_CORRECTED
+  - BDF_MAG_J_CORRECTED
+ # - BDF_MAG_H_CORRECTED
+  - BDF_MAG_KS_CORRECTED
+filters_err:
+  - BDF_MAG_ERR_G
+  - BDF_MAG_ERR_R
+  - BDF_MAG_ERR_I
+  - BDF_MAG_ERR_Z
+  - BDF_MAG_ERR_J
+  #- BDF_MAG_ERR_H
+  - BDF_MAG_ERR_KS
+
+zspec: Z
+
+bins:
+  start: 0.0
+  stop: 2.0
+  nbins: 100
+
+fit: true
+pdf: true
+metric: ANF
